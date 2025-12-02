@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local startTime = os.time()
 
-local webhook = "https://discord.com/api/webhooks/1426490623636279308/k8dmGw5cF6QcRAaZCGBRB-7Iyy9J2W8mfe1vTgae-8Tksk3Sl0lo2TxleKChktTG6LIN"
+local webhook = "GANTI DENGAN LINK WEBHOOK MU, JANGAN HAPUS TANDA KUTIP"
 local requestFunction = http and http.request or http_request
 
 local function formatTime(seconds)
