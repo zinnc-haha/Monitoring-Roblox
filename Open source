@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local startTime = os.time()
 
-local webhook = "GANTI SAMA WEBHOOK MU, TANDA KUTIP NYA JANGAN DI DELETE"
+local webhook = "https://discord.com/api/webhooks/1426490623636279308/k8dmGw5cF6QcRAaZCGBRB-7Iyy9J2W8mfe1vTgae-8Tksk3Sl0lo2TxleKChktTG6LIN"
 local requestFunction = http and http.request or http_request
 
 local function formatTime(seconds)
@@ -65,12 +65,13 @@ local function sendStatus(status)
 end
 
 
+sendStatus("🟢 Active In Game (Just Joined the Game)")
+
 task.spawn(function()
     while task.wait(3600) do
         sendStatus("🟢 Active In Game")
     end
 end)
-
 
 Players.PlayerRemoving:Connect(function(player)
     if player == LocalPlayer then
