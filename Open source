@@ -4,8 +4,10 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local startTime = os.time()
 
-local webhook = "GANTI DENGAN LINK WEBHOOK MU, JANGAN HAPUS TANDA KUTIP"
+local webhook = "GANTI SAMA LINK WEBHOOK MU"
 local requestFunction = http and http.request or http_request
+
+local discordUserId = "GANTI SAMA ID DISCORD MU"
 
 local function formatTime(seconds)
     local h = math.floor(seconds / 3600)
@@ -14,7 +16,7 @@ local function formatTime(seconds)
     return string.format("%02d:%02d:%02d", h, m, s)
 end
 
-local function sendStatus(status)
+local function sendStatus(status, pingUser)
     local uptime = os.time() - startTime
     local uptimeFormatted = formatTime(uptime)
 
@@ -23,7 +25,7 @@ local function sendStatus(status)
     end
 
     local data = {
-        username = "Roblox Monitoring",
+        username = "Zinnc Webhook",
 
         embeds = {{
             title = "Roblox Status Updated!",
@@ -49,12 +51,20 @@ local function sendStatus(status)
             },
 
             footer = {
-                text = "discord.gg/zUf6yjNHdp • Roblox Monitoring"
+                text = "discord.gg/zUf6yjNHdp • @zncyeah_"
             },
 
             timestamp = DateTime.now():ToIsoDate()
         }}
     }
+
+    if pingUser then
+        data.content = "Hey! <@" .. discordUserId .. "> view this webhook status"
+        data.allowed_mentions = {
+            parse = {"users"},
+            users = {discordUserId}
+        }
+    end
 
     requestFunction({
         Url = webhook,
@@ -64,17 +74,16 @@ local function sendStatus(status)
     })
 end
 
-
-sendStatus("🟢 Active In Game (Just Joined the Game)")
+sendStatus("🟢 Active In Game (Just Joined the Game)", false)
 
 task.spawn(function()
     while task.wait(3600) do
-        sendStatus("🟢 Active In Game")
+        sendStatus("🟢 Active In Game", false)
     end
 end)
 
 Players.PlayerRemoving:Connect(function(player)
     if player == LocalPlayer then
-        sendStatus("🔴 Player Disconnect / Crash / Kicked ")
+        sendStatus("🔴 Player Disconnect / Crash / Kicked", true)
     end
 end)
