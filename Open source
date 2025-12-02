@@ -74,6 +74,6 @@ end)
 
 Players.PlayerRemoving:Connect(function(player)
     if player == LocalPlayer then
-        sendStatus("🔴 Player Disconnect / Crash / Kicked (" .. player.Name .. ")")
+        sendStatus("🔴 Player Disconnect / Crash / Kicked ")
     end
 end)
