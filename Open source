@@ -1,0 +1,79 @@
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+local LocalPlayer = Players.LocalPlayer
+local startTime = os.time()
+
+local webhook = "GANTI SAMA WEBHOOK MU, TANDA KUTIP NYA JANGAN DI DELETE"
+local requestFunction = http and http.request or http_request
+
+local function formatTime(seconds)
+    local h = math.floor(seconds / 3600)
+    local m = math.floor((seconds % 3600) / 60)
+    local s = seconds % 60
+    return string.format("%02d:%02d:%02d", h, m, s)
+end
+
+local function sendStatus(status)
+    local uptime = os.time() - startTime
+    local uptimeFormatted = formatTime(uptime)
+
+    local function box(text)
+        return "```\n" .. text .. "\n```"
+    end
+
+    local data = {
+        username = "Roblox Monitoring",
+
+        embeds = {{
+            title = "Roblox Status Updated!",
+            description = "This webhook was created by @zncyeah_",
+            color = 0x7B00FF,
+
+            fields = {
+                {
+                    name = "⚡ Status Player :",
+                    value = box(status),
+                    inline = false
+                },
+                {
+                    name = "⏳ Uptime :",
+                    value = box(uptimeFormatted),
+                    inline = false
+                },
+                {
+                    name = "👤 Username :",
+                    value = box(LocalPlayer.Name),
+                    inline = false
+                }
+            },
+
+            footer = {
+                text = "discord.gg/zUf6yjNHdp • Roblox Monitoring"
+            },
+
+            timestamp = DateTime.now():ToIsoDate()
+        }}
+    }
+
+    requestFunction({
+        Url = webhook,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = HttpService:JSONEncode(data)
+    })
+end
+
+
+task.spawn(function()
+    while task.wait(3600) do
+        sendStatus("🟢 Active In Game")
+    end
+end)
+
+
+Players.PlayerRemoving:Connect(function(player)
+    if player == LocalPlayer then
+        sendStatus("🔴 Player Disconnect / Crash / Kicked (" .. player.Name .. ")")
+    end
+end)
